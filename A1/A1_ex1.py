@@ -103,9 +103,17 @@ class TreeNode:
         else:
             self.depth = self.parent.depth + 1
 
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.state == other.state
+        else:
+            return False
+
     def add_child(self, child_node):
         self.children.append(child_node)
         child_node.parent = self
+
+
 
 
 
@@ -132,9 +140,35 @@ def breadth_first_search(initial_state, goal_state_func, operators_func):
     return None
 
 
+def depth_first_search(initial_state, goal_state_func, operators_func):
+    root = TreeNode(initial_state)   # create the root node in the search tree
+    stack = [root]   # initialize the queue to store the nodes
+    visited = []
+
+    
+    while stack:
+        node = stack.pop()   # get last inserted element in the queue
+        if goal_state_func(node.state):   # check goal state
+            return node
+
+        if node not in visited:
+            # add leaf to visited
+            visited.append(node)
+            for state in operators_func(node.state):   # go through next states
+                # create tree node with the new state
+                leaf = TreeNode(state)
+                # link child node to its parent in the tree
+                node.add_child(leaf)
+                # enqueue the child node
+                stack.append(leaf)
+                
+    return None
+    
+
+
 def main():
 
-    goal = breadth_first_search(BucketState(0,0), 
+    goal = depth_first_search(BucketState(0,0), 
                             goal_bucket_state, 
                             child_bucket_states)
     while (goal.parent != None):
