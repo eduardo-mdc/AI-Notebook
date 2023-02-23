@@ -208,6 +208,17 @@ def iterative_deepening_search(initial_state,goal_state_func,operators_func,dept
     return goal
 
 
+def heuristic_bucket(node):
+    # heuristic function for the bucket filling problem
+
+    # heuristic function : absolute distance to goal
+    state = node.state
+    return abs(state.b1 - 2)
+
+
+def greedy_search(initial_state, goal_state_func, operators_func, heuristic_func):
+    # your code here    
+
 def main():
 
     initial_state = BucketState(0,0)
